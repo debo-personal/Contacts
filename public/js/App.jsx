@@ -1,7 +1,8 @@
 import React from "react";
 require('../css/app.css')
-import {Grid, Row, Col, Button} from 'react-bootstrap';
+import {Grid} from 'react-bootstrap';
 import ContactList from './ContactList';
+import NewContact from './NewContact';
 
 
 class App extends React.Component {
@@ -9,21 +10,33 @@ class App extends React.Component {
         super(props);
         this.state = {
             contacts : []
-        }
+        };
+        this.onNewContactAddition = this.onNewContactAddition.bind(this);
     }
 
     componentDidMount() {
-        fetch('./contacts')
-            .then( result => result.json())
+        this.fetchContacts()
+            .then( contacts => this.setState({contacts}));
+    }
+
+    fetchContacts() {
+        const contactsListPromise = fetch('./contacts')
+                        .then( result => result.json());
+        return contactsListPromise;
+    }
+
+    onNewContactAddition() {
+        this.fetchContacts()
             .then( contacts => this.setState({contacts}));
     }
 
     render() {
         return (
-        <div>
-            <h1>Contacts</h1>
-            <ContactList contacts = {this.state.contacts}/>
-        </div>
+            <Grid fluid={true}>
+                <h1>Contacts</h1>
+                <ContactList contacts = {this.state.contacts}/>
+                <NewContact onNewContactAddition={this.onNewContactAddition}/>
+            </Grid>
         );
     }
 }

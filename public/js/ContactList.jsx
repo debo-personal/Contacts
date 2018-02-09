@@ -14,7 +14,7 @@ class ContactList extends React.Component {
             });
         }
         return (
-            <Grid>
+            <Grid fluid={true}>
                 {contactRows}
             </Grid>
         );
