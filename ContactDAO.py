@@ -16,6 +16,21 @@ def fetch_all():
         rows = query.fetchall()
         return [dict(row) for row in rows]
 
+def delete_contact(id):
+    '''Deleting a contact from table as per id'''
+    with sqlite3.connect(DB_NAME) as con:
+        con.execute("DELETE FROM contacts WHERE id=?", id)
+
+def update_contact(id, contact):
+    '''Updating a contact'''
+    with sqlite3.connect(DB_NAME) as con:
+        con.execute("""UPDATE contacts
+        SET name = '{0}',
+        category = '{1}',
+        email = '{2}',
+        phone = '{3}'
+        WHERE id = {4}""".format(contact.name, contact.group, contact.email, contact.phone, id))
+
 def setup_database():
     '''Create the 'contacts' table in the database on server startup'''
     with sqlite3.connect(DB_NAME) as con:
