@@ -1,7 +1,7 @@
 import React from "react";
 import {Grid} from 'react-bootstrap';
-import ContactList from './ContactList';
-import NewContact from './NewContact';
+import ContactList from './Contact/ContactList';
+import NewContact from './Contact/NewContact';
 import StatusPanel from './Common/StatusPanel';
 
 require('../css/app.css');
@@ -48,7 +48,9 @@ class App extends React.Component {
 
     onStatusPanelClose() {
         this.setState({
-            showStatusPanel: false
+            showStatusPanel: false,
+            statusMessage: '',
+            statusMode: ''
         });
     }
 

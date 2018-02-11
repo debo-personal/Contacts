@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form, FormGroup, FormControl} from 'react-bootstrap';
-import SubmitButton from './Common/SubmitButton';
+import SubmitButton from '../Common/SubmitButton';
 
 class NewContact extends React.Component {
     constructor(props) {
