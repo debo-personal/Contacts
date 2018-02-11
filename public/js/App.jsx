@@ -1,22 +1,28 @@
 import React from "react";
-require('../css/app.css')
 import {Grid} from 'react-bootstrap';
 import ContactList from './ContactList';
 import NewContact from './NewContact';
+import StatusPanel from './Common/StatusPanel';
+
+require('../css/app.css');
 
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            contacts : []
+            contacts : [],
+            showStatusPanel : false,
+            statusMode : '',
+            statusMessage : ''
         };
-        this.onNewContactAddition = this.onNewContactAddition.bind(this);
+        this.refreshContactsState = this.refreshContactsState.bind(this);
+        this.showNotification = this.showNotification.bind(this);
+        this.onStatusPanelClose = this.onStatusPanelClose.bind(this);
     }
 
     componentDidMount() {
-        this.fetchContacts()
-            .then( contacts => this.setState({contacts}));
+        this.refreshContactsState();
     }
 
     fetchContacts() {
@@ -25,17 +31,40 @@ class App extends React.Component {
         return contactsListPromise;
     }
 
-    onNewContactAddition() {
+    refreshContactsState() {
         this.fetchContacts()
             .then( contacts => this.setState({contacts}));
+    }
+
+    showNotification( mode, msg) {
+        if( mode && msg ) {
+            this.setState({
+                showStatusPanel: true,
+                statusMode: mode,
+                statusMessage: msg
+            });
+        }
+    }
+
+    onStatusPanelClose() {
+        this.setState({
+            showStatusPanel: false
+        });
     }
 
     render() {
         return (
             <Grid fluid={true}>
                 <h1>Contacts</h1>
-                <ContactList contacts = {this.state.contacts}/>
-                <NewContact onNewContactAddition={this.onNewContactAddition}/>
+                <ContactList contacts = {this.state.contacts} 
+                    refreshContactList={this.refreshContactsState}
+                    showNotification={this.showNotification}/>
+                <NewContact onNewContactAddition={this.refreshContactsState}
+                    showNotification={this.showNotification}/>
+                <StatusPanel mode={this.state.statusMode} 
+                    msg={this.state.statusMessage} 
+                    show={this.state.showStatusPanel}
+                    onClose={this.onStatusPanelClose}/>
             </Grid>
         );
     }

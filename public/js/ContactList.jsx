@@ -10,7 +10,9 @@ class ContactList extends React.Component {
         let contactRows = [];
         if(this.props && this.props.contacts && this.props.contacts.length) {
             contactRows = this.props.contacts.map((contact)=>{
-                return <ContactRow key={contact.id} contact={contact}/>;
+                return <ContactRow key={contact.id} contact={contact} 
+                    refreshContactList={this.props.refreshContactList}
+                    showNotification={this.props.showNotification}/>;
             });
         }
         return (
